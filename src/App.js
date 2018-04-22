@@ -11,18 +11,15 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount(){
-    this.refreshBooks();
-	}
-
-	refreshBooks = () => {
-		BooksAPI.getAll().then((books) => {
+    BooksAPI.getAll().then((books) => {
       this.setState(() => ({books}))
     });
 	}
-	
+
 	moveBook = (book, shelf) => {
 		BooksAPI.update(book, shelf).then((books) => {
-			this.refreshBooks();
+			book.shelf = shelf;
+			this.setState((currState) => ({books: currState.books}));
 		});
 	}
 
