@@ -6,13 +6,12 @@ function splitCamelCaseToString(s) {
 	return split.charAt(0).toUpperCase() + split.slice(1);
 }
 
-class BookList extends Component {
-	
+class BookList extends Component {	
 	render() {
-		const {title, books} = this.props;
+		const {category, books, moveBook} = this.props;
 		return (
 			<div className="bookshelf">
-				<h2 className="bookshelf-title">{splitCamelCaseToString(title)}</h2>
+				<h2 className="bookshelf-title">{splitCamelCaseToString(category)}</h2>
 				<div className="bookshelf-books">
 					<ol className="books-grid">
 						{books.map((book) => (
@@ -21,7 +20,7 @@ class BookList extends Component {
 									<div className="book-top">
 										<div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url('${book.imageLinks.thumbnail}')` }}></div>
 										<div className="book-shelf-changer">
-											<select>
+											<select value={book.shelf} onChange={(event) => moveBook(book, event.target.value)}>
 												<option value="none" disabled>Move to...</option>
 												<option value="currentlyReading">Currently Reading</option>
 												<option value="wantToRead">Want to Read</option>
@@ -50,7 +49,7 @@ class BookShelf extends Component {
 	
 	render() {
 		const categories = ['currentlyReading', 'wantToRead', 'read'];
-		const {books} = this.props;
+		const {books, moveBook} = this.props;
 		return (
 			<div className="list-books">
             <div className="list-books-title">
@@ -58,7 +57,10 @@ class BookShelf extends Component {
             </div>
             <div className="list-books-content">
               {categories.map((category) => (
-								<BookList key={category} title={category} books={books.filter(book => (book.shelf === category))}/>
+								<BookList key={category} 
+													category={category} 
+													moveBook={moveBook}
+													books={books.filter(book => (book.shelf === category))}/>
 							))}
             </div>
             <div className="open-search">
