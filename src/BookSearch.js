@@ -58,7 +58,9 @@ class BookSearch extends Component {
 				</div>
 				<div className="search-books-results">
 					<BookList category="Results" 
-										moveBook={moveBook}
+										moveBook={(book, shelf) => {
+															moveBook(book, shelf, ()=>{ this.search(query)});
+														 }}
 										books={books}/>
 				</div>
 			</div>

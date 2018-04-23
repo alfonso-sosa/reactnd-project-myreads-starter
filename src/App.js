@@ -10,9 +10,10 @@ class BooksApp extends React.Component {
     books: []
   }
 
-	getBooks = ()=>{
+	getBooks = (callback=()=>{})=>{
 		BooksAPI.getAll().then((books) => {
-      this.setState(() => ({books}))
+			this.setState(() => ({books}));
+			callback();
     });
 	}
 
@@ -20,9 +21,9 @@ class BooksApp extends React.Component {
     this.getBooks();
 	}
 
-	moveBook = (book, shelf) => {
+	moveBook = (book, shelf, callback=()=>{}) => {
 		BooksAPI.update(book, shelf).then((books) => {
-			this.getBooks();
+			this.getBooks(callback);
 		});
 	}
 
