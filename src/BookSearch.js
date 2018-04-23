@@ -11,6 +11,7 @@ class BookSearch extends Component {
 	}
 	
 	search = (query) => {
+		const bookshelf = this.props.books;
 		if (!query){
 			this.setState(() => ({books: [], query: ''}));
 			return;
@@ -19,7 +20,13 @@ class BookSearch extends Component {
 			if (books["error"]){
 				books = [];
 			}
-			console.log(books);
+			books = books.map((book) => {
+				const inBookshelf = bookshelf.filter((b)=>(b.id === book.id));
+				if (inBookshelf.length > 0){
+					return Object.assign(book, {shelf: inBookshelf[0].shelf});
+				}
+				return book;
+			})
 			this.setState(() => ({books, query}));
 		});		
 	}
