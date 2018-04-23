@@ -6,7 +6,7 @@ function splitCamelCaseToString(s) {
 	return split.charAt(0).toUpperCase() + split.slice(1);
 }
 
-class BookList extends Component {	
+export class BookList extends Component {	
 	render() {
 		const {category, books, moveBook} = this.props;
 		return (
@@ -18,10 +18,14 @@ class BookList extends Component {
 							<li key={book.id}>
 								<div className="book">
 									<div className="book-top">
-										<div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url('${book.imageLinks.thumbnail}')` }}></div>
+										<div className="book-cover" 
+												style={{ width: 128, 
+																	height: 193, 
+															 		backgroundImage: (book.imageLinks && book.imageLinks.thumbnail ?
+															 											`url('${book.imageLinks.thumbnail}')`: '') }}></div>
 										<div className="book-shelf-changer">
-											<select value={book.shelf} onChange={(event) => moveBook(book, event.target.value)}>
-												<option value="none" disabled>Move to...</option>
+											<select value={book.shelf || "none"} onChange={(event) => moveBook(book, event.target.value)}>
+												<option value="" disabled>Move to...</option>
 												<option value="currentlyReading">Currently Reading</option>
 												<option value="wantToRead">Want to Read</option>
 												<option value="read">Read</option>
@@ -30,7 +34,7 @@ class BookList extends Component {
 										</div>
 									</div>
 									<div className="book-title">{book.title}</div>
-									{book.authors.map((author)=>(
+									{book.authors && book.authors.map((author)=>(
 										<div className="book-authors" key={author}>
 											{author}
 										</div>
